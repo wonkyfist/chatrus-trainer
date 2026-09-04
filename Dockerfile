@@ -21,8 +21,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends git build-essen
 RUN git clone --depth 1 --recurse-submodules https://github.com/ostris/ai-toolkit.git /app/ai-toolkit
 WORKDIR /app/ai-toolkit
 
-# torch wheels carry their own CUDA runtime (cu128 works on every current RunPod host)
-RUN pip install torch==2.13.0 torchvision==0.28.0 torchaudio==2.11.0 --index-url https://download.pytorch.org/whl/cu128 \
+# torch wheels carry their own CUDA runtime; the cu128 build runs on every current RunPod host
+# (ai-toolkit's README pins 2.13, which only ships for CUDA 13.0; 2.11 is the newest cu128 build)
+RUN pip install torch==2.11.0 torchvision==0.26.0 torchaudio==2.11.0 --index-url https://download.pytorch.org/whl/cu128 \
     && pip install -r requirements.txt \
     && pip install runpod pyyaml hf_transfer
 
